@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Accidetector</string>
+    <string name="app_title">Accident Detector</string>
+    <string name="enter_email">Enter email</string>
+    <string name="email">Email</string>
+    <string name="login">Login</string>
+    <string name="error_field">Field cannot be empty</string>
+</resources>
