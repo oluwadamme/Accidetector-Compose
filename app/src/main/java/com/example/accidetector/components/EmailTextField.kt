@@ -25,14 +25,14 @@ import com.example.accidetector.viewmodel.LoginViewModel
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmailTextField(viewModel: LoginViewModel,modifier: Modifier) {
+fun EmailTextField(onChange: (value:String)->Any,fieldValue:String,modifier: Modifier, isError:Boolean=false) {
     Column(
         modifier = modifier,
     ) {
         TextField(
-            value = viewModel.emailField,
-            onValueChange = { value ->
-                viewModel.updateEmail(value)
+            value = fieldValue,
+            onValueChange = { it ->
+              onChange(it)
             },
             modifier = Modifier.fillMaxWidth(),
             leadingIcon = {
@@ -42,13 +42,13 @@ fun EmailTextField(viewModel: LoginViewModel,modifier: Modifier) {
                 )
             },
             colors = TextFieldDefaults.textFieldColors(containerColor = Color.White),
-            isError = !viewModel.isEmailValid( ),
+            isError = isError,
             label = { Text(text = stringResource(id = R.string.enter_email)) },
             placeholder = { Text(text = stringResource(id = R.string.email)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
 
-        if (!viewModel.isEmailValid( )) {
+        if (isError) {
             Text(text = "Email is not valid", color = Color.Red)
         }
 

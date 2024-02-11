@@ -5,13 +5,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.example.accidetector.service.DataStoreService
+import com.example.accidetector.utils.route.Routes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel  @Inject constructor(val service: DataStoreService) : ViewModel() {
+class LoginViewModel  @Inject constructor(private val service: DataStoreService) : ViewModel() {
     var emailField by mutableStateOf("")
     fun updateEmail(value: String) {
         emailField = value.trim()
@@ -26,10 +28,13 @@ class LoginViewModel  @Inject constructor(val service: DataStoreService) : ViewM
         return emailField.matches(emailRegex)
     }
 
-    fun handleLogin() {
+    fun handleLogin(navController: NavController) {
         if (isEmailValid()) {
-            viewModelScope.launch {
+          val state=  viewModelScope.launch {
                 service.writeStringDataFromDB("email", emailField)
+            }
+            if (state.isCompleted){
+                navController.navigate(Routes.HomeScreen.name)
             }
 
         }

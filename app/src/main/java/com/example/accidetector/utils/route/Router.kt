@@ -2,11 +2,11 @@ package com.example.accidetector.utils.route
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHost
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.accidetector.LoginScreen
+import com.example.accidetector.presentation.login.LoginScreen
 import com.example.accidetector.viewmodel.LoginViewModel
 
 @Composable
@@ -15,7 +15,7 @@ fun Router(hostController: NavHostController) {
 
     NavHost(navController = hostController, startDestination = Routes.LoginScreen.name) {
         composable(Routes.LoginScreen.name) {
-            LoginScreen(loginViewModel)
+            LoginScreen(loginViewModel, hostController)
         }
     }
 }
