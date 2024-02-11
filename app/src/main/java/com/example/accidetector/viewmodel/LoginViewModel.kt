@@ -2,17 +2,16 @@ package com.example.accidetector.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.accidetector.db.DataStoreDB
+import com.example.accidetector.service.DataStoreService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel  @Inject constructor(val db: DataStoreDB) : ViewModel() {
+class LoginViewModel  @Inject constructor(val service: DataStoreService) : ViewModel() {
     var emailField by mutableStateOf("")
     fun updateEmail(value: String) {
         emailField = value.trim()
@@ -30,7 +29,7 @@ class LoginViewModel  @Inject constructor(val db: DataStoreDB) : ViewModel() {
     fun handleLogin() {
         if (isEmailValid()) {
             viewModelScope.launch {
-                db.writeStringDataFromDB("email", emailField)
+                service.writeStringDataFromDB("email", emailField)
             }
 
         }
