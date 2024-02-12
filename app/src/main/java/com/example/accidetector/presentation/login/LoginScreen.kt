@@ -11,6 +11,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -19,11 +20,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.accidetector.R
 import com.example.accidetector.components.EmailTextField
+import com.example.accidetector.utils.route.Routes
 import com.example.accidetector.viewmodel.LoginViewModel
 
 
@@ -55,9 +61,9 @@ fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
     }, containerColor = Color.White) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             EmailTextField(
-                onChange = {value->  viewModel.updateEmail(value)},
+                onChange = { value -> viewModel.updateEmail(value) },
                 viewModel.emailField,
-               modifier= Modifier
+                modifier = Modifier
                     .padding(top = it.calculateTopPadding())
                     .padding(20.dp),
                 isError = !viewModel.isEmailValid()
@@ -74,7 +80,22 @@ fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
             ) {
                 Text(text = stringResource(id = R.string.login))
             }
+            Box(modifier = Modifier.padding(bottom = 100.dp))
+
+            Text(text = buildAnnotatedString {
+                append("Don't have an account ")
+                withStyle(
+                    style = SpanStyle(
+                        Color.Green, textDecoration = TextDecoration.Underline
+                    )
+                ) {
+                    TextButton(onClick = { navController.navigate(Routes.SignUpScreen.name) }) {
+                        append("Create one")
+                    }
+                }
+            })
         }
+
 
     }
 }
