@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.accidetector.presentation.login.LoginScreen
+import com.example.accidetector.presentation.signup.SignUpScreen
 import com.example.accidetector.viewmodel.LoginViewModel
 
 @Composable
@@ -16,6 +17,9 @@ fun Router(hostController: NavHostController) {
     NavHost(navController = hostController, startDestination = Routes.LoginScreen.name) {
         composable(Routes.LoginScreen.name) {
             LoginScreen(loginViewModel, hostController)
+        }
+        composable(Routes.SignUpScreen.name) {
+            SignUpScreen()
         }
     }
 }

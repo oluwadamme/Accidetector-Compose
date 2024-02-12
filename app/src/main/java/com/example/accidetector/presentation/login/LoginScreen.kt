@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.icu.lang.UCharacter
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -28,37 +29,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.accidetector.R
+import com.example.accidetector.components.CustomButton
+import com.example.accidetector.components.CustomScaffold
 import com.example.accidetector.components.EmailTextField
 import com.example.accidetector.utils.route.Routes
 import com.example.accidetector.viewmodel.LoginViewModel
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
-
-    Scaffold(topBar = {
-
-        TopAppBar(
-
-            title = {
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    Text(
-                        text = UCharacter.toUpperCase(stringResource(id = R.string.app_title)),
-                        fontSize = 30.sp,
-                        color = Color.White,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
-            },
-
-            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                colorResource(id = R.color.teal_700)
-            )
-        )
-
-    }, containerColor = Color.White) {
+    CustomScaffold(appBarTitle = stringResource(id = R.string.app_title)) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             EmailTextField(
                 onChange = { value -> viewModel.updateEmail(value) },
@@ -69,17 +50,12 @@ fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
                 isError = !viewModel.isEmailValid()
             )
             Box(modifier = Modifier.padding(bottom = 20.dp))
-            Button(
+            CustomButton(
+                text = stringResource(id = R.string.login),
                 onClick = {
                     viewModel.handleLogin(navController)
-                }, colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(
-                        id = R.color.teal_700
-                    )
-                )
-            ) {
-                Text(text = stringResource(id = R.string.login))
-            }
+                },
+            )
             Box(modifier = Modifier.padding(bottom = 100.dp))
 
             Text(text = buildAnnotatedString {
@@ -95,7 +71,7 @@ fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
                 }
             })
         }
-
-
     }
 }
+
+
