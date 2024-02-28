@@ -5,5 +5,6 @@ enum class Routes {
     SignUpScreen,
     HomeScreen,
     UserInfoScreen,
-    SensorScreen
+    SensorScreen,
+    DashboardScreen,
 }

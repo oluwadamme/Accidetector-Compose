@@ -1,10 +1,11 @@
 package com.example.accidetector.components
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.Icon
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
@@ -17,39 +18,48 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
 import com.example.accidetector.R
-import com.example.accidetector.viewmodel.LoginViewModel
-
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmailTextField(onChange: (value:String)->Any,fieldValue:String,modifier: Modifier, isError:Boolean=false) {
+fun CustomTextField(
+    onChange: (value: String) -> Any,
+    fieldValue: String,
+    isError: Boolean = false,
+    label: String,
+    placeholder: String,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    imeAction: ImeAction = ImeAction.Next,
+    errorText: String = stringResource(id = R.string.error_field),
+    bgColor: Color = Color.White,
+    leadingIcon: @Composable (() -> Unit)? = null
+) {
+
     Column(
-        modifier = modifier,
+
     ) {
         TextField(
             value = fieldValue,
             onValueChange = { it ->
-              onChange(it)
+                onChange(it)
             },
             modifier = Modifier.fillMaxWidth(),
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Default.Email,
-                    contentDescription = "Email"
-                )
-            },
-            colors = TextFieldDefaults.textFieldColors(containerColor = Color.White),
+            leadingIcon = leadingIcon,
+            colors = TextFieldDefaults.textFieldColors(containerColor = bgColor),
             isError = isError,
-            label = { Text(text = stringResource(id = R.string.enter_email)) },
-            placeholder = { Text(text = stringResource(id = R.string.email)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
-        )
-        AnimatedVisibility(visible =isError){
-            Text(text = "Email is not valid", color = Color.Red)
+            label = { Text(text = label) },
+            placeholder = { Text(text = placeholder) },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = keyboardType,
+                imeAction = imeAction
+            ),
+
+            )
+        AnimatedVisibility(visible = isError) {
+            Text(text = errorText, color = Color.Red)
         }
 
     }

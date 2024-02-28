@@ -21,7 +21,12 @@ import com.example.accidetector.R
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomScaffold(appBarTitle: String, content: @Composable (PaddingValues) -> Unit) {
+fun CustomScaffold(
+    appBarTitle: String,
+    navigationIcon:  @Composable () -> Unit = {},
+    bottomBar:  @Composable () -> Unit = {},
+    content: @Composable (PaddingValues) -> Unit,
+) {
     Scaffold(
         topBar = {
 
@@ -37,13 +42,14 @@ fun CustomScaffold(appBarTitle: String, content: @Composable (PaddingValues) -> 
                         )
                     }
                 },
-
+                navigationIcon =navigationIcon,
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     colorResource(id = R.color.teal_700)
                 )
             )
 
         },
+        bottomBar = bottomBar,
         containerColor = Color.White,
         content = content
     )

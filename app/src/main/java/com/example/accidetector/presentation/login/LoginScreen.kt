@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -16,6 +17,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,6 +41,7 @@ import com.example.accidetector.viewmodel.LoginViewModel
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
+    viewModel.emailField=viewModel.getEmail().collectAsState(initial = "").value
     CustomScaffold(appBarTitle = stringResource(id = R.string.app_title)) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             EmailTextField(
@@ -57,18 +60,17 @@ fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
                 },
             )
             Box(modifier = Modifier.padding(bottom = 100.dp))
-
-            Text(text = buildAnnotatedString {
+            ClickableText(text = buildAnnotatedString {
                 append("Don't have an account ")
                 withStyle(
                     style = SpanStyle(
                         Color.Green, textDecoration = TextDecoration.Underline
                     )
                 ) {
-                    TextButton(onClick = { navController.navigate(Routes.SignUpScreen.name) }) {
-                        append("Create one")
-                    }
+                    append("Create one")
                 }
+            }, onClick = {
+                navController.navigate(Routes.SignUpScreen.name)
             })
         }
     }

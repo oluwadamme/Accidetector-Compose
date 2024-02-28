@@ -1,5 +1,6 @@
 package com.example.accidetector.viewmodel
 
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -9,14 +10,19 @@ import androidx.navigation.NavController
 import com.example.accidetector.service.DataStoreService
 import com.example.accidetector.utils.route.Routes
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel  @Inject constructor(private val service: DataStoreService) : ViewModel() {
+class LoginViewModel @Inject constructor(private val service: DataStoreService) : ViewModel() {
     var emailField by mutableStateOf("")
     fun updateEmail(value: String) {
         emailField = value.trim()
+    }
+
+    fun getEmail(): Flow<String> {
+     return service.readStringDataFromDB("email")
     }
 
     fun isEmailValid(): Boolean {
@@ -30,12 +36,14 @@ class LoginViewModel  @Inject constructor(private val service: DataStoreService)
 
     fun handleLogin(navController: NavController) {
         if (isEmailValid()) {
-          val state=  viewModelScope.launch {
+            val state = viewModelScope.launch {
                 service.writeStringDataFromDB("email", emailField)
             }
-            if (state.isCompleted){
-                navController.navigate(Routes.HomeScreen.name)
-            }
+            state.invokeOnCompletion(
+                handler = {
+                    navController.navigate(Routes.DashboardScreen.name)
+                },
+            )
 
         }
     }

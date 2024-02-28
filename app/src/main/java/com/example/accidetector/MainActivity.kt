@@ -44,7 +44,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.accidetector.components.BottomNavigationBarComponent
 import com.example.accidetector.components.EmailTextField
 import com.example.accidetector.ui.theme.AccidetectorTheme
 import com.example.accidetector.utils.route.Router
@@ -55,6 +57,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             AccidetectorTheme {
                 // A surface container using the 'background' color from the theme
@@ -62,11 +65,13 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val controller = rememberNavController()
-//                    val navBackStackEntry = controller.currentBackStackEntryAsState()
-//                    val currentDestination = navBackStackEntry.value?.destination
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        val controller = rememberNavController()
 
-                    Router(controller)
+
+                        Router(controller)
+                    }
+
 
                 }
             }
